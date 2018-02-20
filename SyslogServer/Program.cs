@@ -17,6 +17,8 @@ namespace SyslogServer
         public delegate void OnMessageReceived(Message message);
         public static event OnMessageReceived MessageReceived;
 
+		public static IFormatProvider dateHeader = new System.Globalization.CultureInfo("en-US");
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -87,7 +89,7 @@ namespace SyslogServer
                     {
                         string hdr = m.Groups["HDR"].Value.TrimEnd();
                         int idx = hdr.LastIndexOf(' ');
-                        msg.Datestamp = DateTime.ParseExact(hdr.Substring(0, idx), "MMM dd HH:mm:ss", null);
+                        msg.Datestamp = DateTime.ParseExact(hdr.Substring(0, idx), "MMM dd HH:mm:ss", dateHeader);
                         msg.Hostname = hdr.Substring(idx + 1);
                     }
                     else
